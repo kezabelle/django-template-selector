@@ -1,0 +1,18 @@
+[run]
+source = templateselector
+omit =
+    templateselector/tests/*
+branch = True
+data_file = .coverage
+timid = False
+
+[report]
+exclude_lines =
+    pragma: no cover
+precision = 0
+show_missing = True
+omit =
+    templateselector/tests/*
+
+[xml]
+output = coverage.xml
