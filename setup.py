@@ -4,11 +4,11 @@ import sys
 import os
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
+EXTRA_INSTALLS = []
 if sys.version_info[0] == 2:
     # get the Py3K compatible `encoding=` for opening files.
-	from io import open
-
-
+    from io import open
+    EXTRA_INSTALLS.append("scandir>=1.5")
 HERE = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -61,7 +61,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "Django>=1.8",
-    ],
+    ] + EXTRA_INSTALLS,
     tests_require=[
         "pytest>=2.6",
         "pytest-django>=2.8.0,<3.0.0",
@@ -82,12 +82,8 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Framework :: Django",
-        "Framework :: Django :: 1.10",
-        "Framework :: Django :: 1.8",
-        "Framework :: Django :: 1.9",
+        "Framework :: Django :: 1.11",
     ],
 )
