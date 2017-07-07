@@ -64,10 +64,9 @@ setup(
     ] + EXTRA_INSTALLS,
     tests_require=[
         "pytest>=2.6",
-        "pytest-django>=2.8.0,<3.0.0",
+        "pytest-django>=2.8.0",
         "pytest-cov>=1.8",
-        "pytest-remove-stale-bytecode>=1.0",
-        "pytest-catchlog>=1.2",
+        "pytest-pythonpath>=0.7.1",
     ],
     cmdclass={"test": PyTest},
     zip_safe=False,

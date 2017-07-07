@@ -1,14 +1,14 @@
 django-templateselector
-================================
+=======================
 
 :author: Keryn Knight
 :version: 0.1.0
 
-.. |travis_stable| image:: https://travis-ci.org/kezabelle/django-templateselector.svg?branch=0.1.0
-  :target: https://travis-ci.org/kezabelle/django-templateselector
+.. |travis_stable| image:: https://travis-ci.org/kezabelle/django-template-selector.svg?branch=0.1.0
+  :target: https://travis-ci.org/kezabelle/django-template-selector
 
-.. |travis_master| image:: https://travis-ci.org/kezabelle/django-templateselector.svg?branch=master
-  :target: https://travis-ci.org/kezabelle/django-templateselector
+.. |travis_master| image:: https://travis-ci.org/kezabelle/django-template-selector.svg?branch=master
+  :target: https://travis-ci.org/kezabelle/django-template-selector
 
 ==============  ======
 Release         Status
