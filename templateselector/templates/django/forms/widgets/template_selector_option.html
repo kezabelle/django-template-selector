@@ -1,0 +1,6 @@
+{% load static %}
+<label {% if widget.attrs.id %} for="{{ widget.attrs.id }}"{% endif %} class="templateselector-label">
+{% include "django/forms/widgets/input.html" %}
+<span class="templateselector-thumb" style="background-image: url('{% static option.value|add:".png" %}'), url('{% static "templateselector/fallback.png" %}');"></span>
+<span class="templateselector-display-name">{{ widget.label }}</span>
+</label>

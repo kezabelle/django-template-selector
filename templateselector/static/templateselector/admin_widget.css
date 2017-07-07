@@ -1,0 +1,24 @@
+ul.vTemplateSelectorField .templateselector-list-item {
+    font-size: 14px;
+}
+ul.vTemplateSelectorField .templateselector-label:hover {
+}
+ul.vTemplateSelectorField .templateselector-label:hover .templateselector-thumb {
+    border-color: #79aec8;
+}
+ul.vTemplateSelectorField .templateselector-label:hover .templateselector-display-name {
+    background-color: #79aec8;
+    border-color: #79aec8;
+    color: #FFF;
+}
+
+ul.vTemplateSelectorField .templateselector-label input:checked ~ .templateselector-thumb {
+    border-color: #417690;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.30);
+}
+ul.vTemplateSelectorField .templateselector-label input:checked ~ .templateselector-display-name {
+    color: #FFF;
+    background-color: #417690;
+    border-color: #417690;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.30);
+}

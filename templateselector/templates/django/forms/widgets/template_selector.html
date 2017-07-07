@@ -1,0 +1,7 @@
+{% with id=widget.attrs.id %}<ul{% if id %} id="{{ id }}"{% endif %} class="templateselector-list {% if widget.attrs.class %}{{ widget.attrs.class }}{% endif %}">
+{% for group, options, index in widget.optgroups %}
+    {% for option in options %}
+    <li class="templateselector-list-item">{% include option.template_name with widget=option %}</li>
+    {% endfor %}
+{% endfor %}
+</ul>{% endwith %}

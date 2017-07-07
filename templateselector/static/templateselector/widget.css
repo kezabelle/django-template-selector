@@ -1,0 +1,85 @@
+.templateselector-list {
+    font-size: 0;
+}
+.templateselector-list * {
+    box-sizing: border-box;
+}
+
+.templateselector-list-item {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    width: 100px;
+    font-size: 16px;
+    margin: 0 0.063em;
+}
+
+.templateselector-label {
+    width: 100%;
+    height: 100%;
+    display: inline;
+    cursor: pointer;
+    position: relative;
+}
+.templateselector-label input {
+    margin: 0 auto;
+    position: absolute;
+    top: 110px;
+
+}
+.templateselector-thumb {
+    display: block;
+    width: 100px;
+    height: 120px;
+    margin: 0 auto;
+    border: 2px solid #eee;
+    background-color: #FFF;
+    -webkit-filter: grayscale(75%);
+    filter: grayscale(75%);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: contain;
+    -webkit-transition: border-color 0.2s, border-top-left-radius 0.2s, border-top-right-radius 0.2s, filter 0.2s;
+    -moz-transition: border-color 0.2s, border-top-left-radius 0.2s, border-top-right-radius 0.2s, filter 0.2s;
+    -ms-transition: border-color 0.2s, border-top-left-radius 0.2s, border-top-right-radius 0.2s, filter 0.2s;
+    -o-transition: border-color 0.2s, border-top-left-radius 0.2s, border-top-right-radius 0.2s;
+    transition: border-color 0.2s, border-top-left-radius 0.2s, border-top-right-radius 0.2s;
+}
+.templateselector-display-name {
+    display: block;
+    margin: 0;
+    -webkit-transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+    -moz-transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+    -ms-transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+    -o-transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+    background-color: #FFF;
+    padding: 0.063em 0.125em 0.188em 0.125em;
+    border: 2px solid #FFF;
+    border-bottom-left-radius: 0.188em;
+    border-bottom-right-radius: 0.188em;
+}
+
+.templateselector-label:hover .templateselector-thumb {
+    border-color: #AAA;
+    -webkit-filter: grayscale(0%);
+    filter: grayscale(0%);
+}
+.templateselector-label:hover .templateselector-display-name {
+    background-color: #AAA;
+    border-color: #AAA;
+    color: #FFF;
+}
+
+.templateselector-label input:checked ~ .templateselector-thumb {
+    border-color: #333;
+    -webkit-filter: grayscale(0%);
+    filter: grayscale(0%);
+    border-top-left-radius: 0.250em;
+    border-top-right-radius: 0.250em;
+}
+.templateselector-label input:checked ~ .templateselector-display-name {
+    color: #FFF;
+    background-color: #333;
+    border-color: #333;
+}
