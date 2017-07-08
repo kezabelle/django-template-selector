@@ -33,8 +33,10 @@ urlpatterns = [
     url('^admin/', include(admin.site.urls)),
     url('^$', example),
 ]
-
-import debug_toolbar
-urlpatterns = [
-    url(r'^__debug__/', include(debug_toolbar.urls)),
-] + urlpatterns
+try:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+except ImportError:
+    pass
