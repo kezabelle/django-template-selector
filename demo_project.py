@@ -8,7 +8,15 @@ MISSING_DEPENDENCIES = []
 try:
     from django.conf import settings
 except ImportError:
-    MISSING_DEPENDENCIES.append("Django")
+    MISSING_DEPENDENCIES.append("Django\>=1.11")
+try:
+    from os import scandir
+except ImportError:
+    try:
+        from scandir import scandir
+    except ImportError:
+        MISSING_DEPENDENCIES.append("scandir\>=1.5")
+
 
 if MISSING_DEPENDENCIES:
     deps = " ".join(MISSING_DEPENDENCIES)
