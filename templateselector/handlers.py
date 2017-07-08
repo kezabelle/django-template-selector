@@ -2,9 +2,9 @@
 from __future__ import unicode_literals, absolute_import
 from django.template.loaders import app_directories, filesystem, cached
 try:
-    from os import scandir, walk
+    from os import scandir
 except ImportError:  # pragma: no cover
-    from scandir import scandir, walk
+    from scandir import scandir
 
 
 __all__ = ['get_results_from_registry']
