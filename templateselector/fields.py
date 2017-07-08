@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
-
-from functools import partial
-
 from operator import itemgetter
-
 from django.conf import settings
 from django.contrib import admin
 from django.utils import six
@@ -58,13 +54,19 @@ def template_exists_validator(value):
 
 
 class TemplateField(CharField):
-    def __init__(self, *args, match='.*', display_name='templateselector.fields.nice_display_name', **kwargs):
+    def __init__(self, match='^.*$', display_name='templateselector.fields.nice_display_name', *args, **kwargs):
         if 'max_length' in kwargs:
             raise ImproperlyConfigured(_("max_length is implicitly set to 191 internally"))
         kwargs['max_length'] = 191 # in case of using mysql+utf8mb4 & indexing
         super(TemplateField, self).__init__(*args, **kwargs)
         self.validators.append(template_exists_validator)
+
+        if not match.startswith('^'):
+            raise ImproperlyConfigured("Missing required ^ at start")
+        if not match.endswith('$'):
+            raise ImproperlyConfigured("Missing required $ at end")
         self.match = match
+
         if isinstance(display_name, six.text_type) and '.' in display_name:
             display_name = import_string(display_name)
         if not callable(display_name):
@@ -107,7 +109,7 @@ class TemplateField(CharField):
 class TemplateChoiceField(TypedChoiceField):
     widget = TemplateSelector
 
-    def __init__(self, *args, match='.*', display_name='templateselector.fields.nice_display_name', **kwargs):
+    def __init__(self, match='^.*$', display_name='templateselector.fields.nice_display_name', *args, **kwargs):
         if 'coerce' in kwargs:
             raise ImproperlyConfigured(_("Don't pass a coercion callable"))
         kwargs['coerce'] = force_text
