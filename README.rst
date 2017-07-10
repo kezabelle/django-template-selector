@@ -67,6 +67,15 @@ The default form field for ``TemplateField`` is ``TemplateChoiceField``
 
 Has the same arguments as ``TemplateField``, and can be used independently
 in all forms if you want to not use the model field.
+The form field, when rendered with the ``TemplateSelector`` widget, will try
+and show a preview image for each template, by attempting to load a ``100x100``
+image from your staticfiles.
+Given a template name of
+``path/to/template.htm`` it will try and load ``path/to/template.htm.png`` prefixed
+by whatever your ``STATIC_URL`` is. If no file exists, a placeholder image is
+shown as a fallback.
+
+Both this and the ``TemplateField`` make use of...
 
 ``nice_display_name``
 ^^^^^^^^^^^^^^^^^^^^^
@@ -81,7 +90,7 @@ flexibility and sensisble defaults; specifically:
 * If not set, or no key match is found, the function will take the *file name*
   (not the path!) without *any extension* and will attempt to make a pretty, readable
   name of it by replacing most non-alphabet characters with spaces, so
-  the template ``test/app/hello_world.html`` would become ``Hello World``
+  the template ``test/app/hello_world.html`` would become ``Hello world``
 
 Supported Django versions
 -------------------------
