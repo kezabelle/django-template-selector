@@ -6,5 +6,5 @@ from templateselector.tests.models import MyModel
 
 
 class MyModelAdmin(admin.ModelAdmin):
-    list_display = ("__unicode__", "get_f_display")
+    list_display = ("__str__", "get_f_display")
 admin.site.register(MyModel, MyModelAdmin)
