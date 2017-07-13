@@ -28,6 +28,15 @@ Provides a new model field, ``fields.TemplateField`` which allows for selection
 of a specific `Django`_ template using a nice form field (``fields.TemplateChoiceField``)
 and a nicer widget (``widgets.TemplateSelector``) than the standard ``<select>`` dropdown.
 
+Example
+^^^^^^^
+
+Below is a screenshot of the admin widget, without any thumbnails set up for
+each template, because I'm too lazy for that.
+
+.. image:: https://raw.github.com/kezabelle/django-template-selector/master/screenshot.png
+    :alt: Example
+
 Use case
 --------
 
@@ -97,7 +106,7 @@ Supported Django versions
 
 The tests are run against Django 1.11 on Python 2.7, and 3.5.
 The widget uses the Django 1.11 template-based-rendering, so won't work on
-previous versions.
+previous versions. Possibly it'll just default back to a normal radiobox? I dunno.
 
 
 Installation and usage
