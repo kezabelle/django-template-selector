@@ -4,4 +4,7 @@ include tox.ini
 include Makefile
 include .coveragerc
 include CHANGELOG
-global-include *.rst *.py *.html
+include screenshot.png
+recursive-include templateselector *.css
+recursive-include templateselector *.png
+global-include *.rst *.py *.html *.css
