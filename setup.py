@@ -48,7 +48,7 @@ KEYWORDS = (
 
 setup(
     name="django-templateselector",
-    version="0.1.0",
+    version="0.1.1",
     author="Keryn Knight",
     author_email="django-templateselector@kerynknight.com",
     maintainer="Keryn Knight",

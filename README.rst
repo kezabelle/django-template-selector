@@ -2,9 +2,9 @@ django-templateselector
 =======================
 
 :author: Keryn Knight
-:version: 0.1.0
+:version: 0.1.1
 
-.. |travis_stable| image:: https://travis-ci.org/kezabelle/django-template-selector.svg?branch=0.1.0
+.. |travis_stable| image:: https://travis-ci.org/kezabelle/django-template-selector.svg?branch=0.1.1
   :target: https://travis-ci.org/kezabelle/django-template-selector
 
 .. |travis_master| image:: https://travis-ci.org/kezabelle/django-template-selector.svg?branch=master
@@ -13,7 +13,7 @@ django-templateselector
 ==============  ======
 Release         Status
 ==============  ======
-stable (0.1.0)  |travis_stable|
+stable (0.1.1)  |travis_stable|
 master          |travis_master|
 ==============  ======
 
@@ -117,9 +117,9 @@ This is currently only available via git ...
 Installation
 ^^^^^^^^^^^^
 
-You can use `pip`_ to install the ``0.1.0`` version from `PyPI`_::
+You can use `pip`_ to install the ``0.1.1`` version from `PyPI`_::
 
-    pip install django-templateselector==0.1.0
+    pip install django-templateselector==0.1.1
 
 Or you can grab it from  `GitHub`_  like this::
 
