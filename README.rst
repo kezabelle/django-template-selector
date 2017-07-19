@@ -117,7 +117,11 @@ This is currently only available via git ...
 Installation
 ^^^^^^^^^^^^
 
-Grab it from  `GitHub`_  like this::
+You can use `pip`_ to install the ``0.1.0`` version from `PyPI`_::
+
+    pip install django-templateselector==0.1.0
+
+Or you can grab it from  `GitHub`_  like this::
 
   pip install -e git+https://github.com/kezabelle/django-template-selector.git#egg=django-template-selector
 
@@ -166,3 +170,5 @@ It's the `FreeBSD`_. There's should be a ``LICENSE`` file in the root of the rep
 .. _FreeBSD: http://en.wikipedia.org/wiki/BSD_licenses#2-clause_license_.28.22Simplified_BSD_License.22_or_.22FreeBSD_License.22.29
 .. _virtualenvwrapper: https://virtualenvwrapper.readthedocs.io/en/latest/
 .. _virtualenv: https://virtualenv.pypa.io/en/stable/
+.. _pip: https://pip.pypa.io/en/stable/
+.. _PyPI: https://pypi.python.org/pypi
