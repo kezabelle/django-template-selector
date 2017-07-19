@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
+from unittest import skipIf
 from uuid import UUID
 
+import django
 import pytest
 
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
 from django.forms import Form, IntegerField
-from django.test import override_settings
+from django.test import override_settings, SimpleTestCase
 from django.utils.encoding import force_text
 from templateselector.fields import TemplateChoiceField
 from templateselector.widgets import TemplateSelector, AdminTemplateSelector
@@ -67,7 +69,7 @@ def test_choices_using_custom_namer():
                               ('admin/500.html', 'ffffffff-ffff-ffff-ffff-ffffffffffff')}
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def form_cls():
     class MyForm(Form):
         a = IntegerField()
@@ -86,13 +88,6 @@ def test_form_usage_ok(form_cls):
     assert f.errors == {}
 
 
-@pytest.mark.xfail
-def test_form_usage_render(form_cls):
-    f = form_cls(data={'a': '1', 'b': 'admin/404.html'})
-    rendered = force_text(f)
-    assert rendered == ''
-
-
 def test_admin_default_formfield(rf, modelcls):
     modeladmin = admin.site._registry[modelcls]
     request = rf.get('/')
@@ -100,3 +95,33 @@ def test_admin_default_formfield(rf, modelcls):
     widget = form.fields['f'].widget
     assert isinstance(widget, TemplateSelector)
     assert isinstance(widget, AdminTemplateSelector)
+
+
+class WidgetTestCase(SimpleTestCase):
+    @skipIf(django.VERSION[0:2] < (1, 11), "won't render properly in Django pre-template-widgets")
+    def test_html_output(self):
+        form = form_cls()(data={'a': '1', 'b': 'admin/404.html'})
+        STATIC_URL = "/TESTOUTPUT/"
+        with override_settings(STATIC_URL=STATIC_URL):
+            rendered = force_text(form['b'])
+
+        self.assertHTMLEqual(rendered, """
+<ul id="id_b" class="templateselector-list ">
+    <li class="templateselector-list-item">
+        <label  for="id_b_0" class="templateselector-label">
+        <input type="radio" name="b" value="admin/404.html" required id="id_b_0" checked />
+
+        <span class="templateselector-thumb" style="background-image: url('{STATIC_URL}admin/404.html.png'), url('{STATIC_URL}templateselector/fallback.png');"></span>
+        <span class="templateselector-display-name">404</span>
+        </label>
+    </li>
+    <li class="templateselector-list-item">
+        <label  for="id_b_1" class="templateselector-label">
+        <input type="radio" name="b" value="admin/500.html" required id="id_b_1" />
+
+        <span class="templateselector-thumb" style="background-image: url('{STATIC_URL}admin/500.html.png'), url('{STATIC_URL}templateselector/fallback.png');"></span>
+        <span class="templateselector-display-name">500</span>
+        </label>
+    </li>
+</ul>
+        """.format(STATIC_URL=STATIC_URL))
