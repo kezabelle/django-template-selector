@@ -143,6 +143,24 @@ class TemplateChoiceField(TypedChoiceField):
         if max_length is not None:
             self.validators.append(MaxLengthValidator(int(max_length)))
 
+    def prepare_value(self, value):
+        """
+        To avoid evaluating the lazysorted callable more than necessary to
+        establish a potential initial value for the field, we do it here.
+
+        If there's
+        - only one template choice, and
+        - the field is required, and
+        - there's no prior initial set (either by being bound or by being set
+          higher up the stack
+        then forcibly select the only "good" value as the default.
+        """
+        if value is None and self.required:
+            choices =list(self.choices)
+            if len(choices) == 1:
+                value = choices[0][0]
+        return super(TemplateChoiceField, self).prepare_value(value)
+
 
 # It doesn't matter wtf the formfield() method for our custom model field says
 # because the admin looks at the MRO for the model field and tries to render

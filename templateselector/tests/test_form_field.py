@@ -127,6 +127,59 @@ class WidgetTestCase(SimpleTestCase):
         """.format(STATIC_URL=STATIC_URL))
 
 
+class WidgetPreselectionTestCase(SimpleTestCase):
+    """
+    If there's only one template choice, and the field is required, pre-select it.
+    Otherwise, don't.
+    """
+
+    @skipIf(django.VERSION[0:2] < (1, 11), "won't render properly in Django pre-template-widgets")
+    def test_pre_selecting_happns_if_only_one_choice_and_required_unbound(self):
+        class MyForm(Form):
+            field = TemplateChoiceField(
+                match="^django/forms/widgets/template_selector.html$",
+                required=True)
+
+        form = MyForm(data=None)
+        rendered = force_text(form['field'])
+        self.assertInHTML('<input type="radio" name="field" value="django/forms/widgets/template_selector.html" required checked id="id_field_0" />', rendered, count=1)
+
+    @skipIf(django.VERSION[0:2] < (1, 11), "won't render properly in Django pre-template-widgets")
+    def test_no_pre_selecting_occurs_for_more_than_one_choice(self):
+        class MyForm(Form):
+            field = TemplateChoiceField(
+                match="^django/forms/widgets/template_.+\.html$",
+                required=True)
+
+        form = MyForm(data=None)
+        rendered = force_text(form['field'])
+        self.assertInHTML('<input type="radio" name="field" value="django/forms/widgets/template_selector.html" required id="id_field_0" />', rendered, count=1)
+        self.assertInHTML('<input type="radio" name="field" value="django/forms/widgets/template_selector_option.html" required id="id_field_1" />', rendered, count=1)
+
+    @skipIf(django.VERSION[0:2] < (1, 11), "won't render properly in Django pre-template-widgets")
+    def test_no_pre_selecting_if_field_is_not_required(self):
+        class MyForm(Form):
+            field = TemplateChoiceField(
+                match="^django/forms/widgets/template_selector.html$",
+                required=False)
+
+        form = MyForm(data=None)
+        rendered = force_text(form['field'])
+        self.assertInHTML('<input type="radio" name="field" value="django/forms/widgets/template_selector.html" id="id_field_0" />', rendered, count=1)
+
+    @skipIf(django.VERSION[0:2] < (1, 11), "won't render properly in Django pre-template-widgets")
+    def test_no_pre_selecting_happens_for_bound_forms(self):
+        class MyForm(Form):
+            field = TemplateChoiceField(
+                match="^django/forms/widgets/template_.+\.html$",
+                required=False)
+
+        form = MyForm(data={'field': 'django/forms/widgets/template_selector_option.html'})
+        rendered = force_text(form['field'])
+        self.assertInHTML('<input type="radio" name="field" value="django/forms/widgets/template_selector.html" id="id_field_0" />', rendered, count=1)
+        self.assertInHTML('<input type="radio" name="field" value="django/forms/widgets/template_selector_option.html" checked id="id_field_1" />', rendered, count=1)
+
+
 def test_no_duplicates():
     field = TemplateChoiceField(match="^django/forms/widgets/template_.+\.html$")
     assert list(field.choices) == [
