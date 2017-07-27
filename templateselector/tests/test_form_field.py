@@ -125,3 +125,11 @@ class WidgetTestCase(SimpleTestCase):
     </li>
 </ul>
         """.format(STATIC_URL=STATIC_URL))
+
+
+def test_no_duplicates():
+    field = TemplateChoiceField(match="^django/forms/widgets/template_.+\.html$")
+    assert list(field.choices) == [
+        (u'django/forms/widgets/template_selector.html', u'Template selector'),
+        (u'django/forms/widgets/template_selector_option.html', u'Template selector option'),
+    ]

@@ -1,5 +1,12 @@
 Change history for django-templateselector
 ------------------------------------------
+
+?next?
+^^^^^^
+
+* Fixed issue where the "same" template could show up more than once in the
+  widget, which wouldn't be possible when using `get_template` 
+
 0.1.1
 ^^^^^^
 * First release on PyPI.

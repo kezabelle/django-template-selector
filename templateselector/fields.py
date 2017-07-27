@@ -136,7 +136,7 @@ class TemplateChoiceField(TypedChoiceField):
                         name = namecaller_(choice)
                         yield (choice, name)
             results = filter_choices(regex_=match, namecaller_=display_name)
-            return sorted(results, key=itemgetter(1))
+            return sorted(set(results), key=itemgetter(1))
 
         self.choices = lazysorted
         self.max_length = max_length
