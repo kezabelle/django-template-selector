@@ -93,6 +93,7 @@ class TemplateField(CharField):
         super(TemplateField, self).contribute_to_class(cls, name, **kwargs)
         display = curry(self.__get_FIELD_template_display, field=self)
         display.short_description = self.verbose_name
+        display.admin_order_field = name
         setattr(cls, 'get_%s_display' % self.name, display)
         template_instance = curry(self.__get_FIELD_template_instance, field=self)
         setattr(cls, 'get_%s_instance' % self.name, template_instance)
