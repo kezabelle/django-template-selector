@@ -9,6 +9,8 @@ from django.contrib.admin.views.main import ChangeList
 from django.core.exceptions import ValidationError, ImproperlyConfigured
 from django.template import TemplateDoesNotExist
 from django.template.backends.django import Template
+from django.test import override_settings
+from templateselector.admin import TemplateFieldListFilter
 from templateselector.fields import TemplateField
 
 
@@ -24,6 +26,8 @@ def modelclsadmin(modelcls):
         def get_results(self, request):
             return 0
     class MyModelAdmin(ModelAdmin):
+        list_display = ("pk", "f",)
+        list_filter = ("f",)
         def get_changelist(self, request, **kwargs):
             return MyChangeList
     modeladmin = MyModelAdmin(model=modelcls, admin_site=AdminSite())
@@ -34,8 +38,8 @@ def modelclschangelist(rf, modelclsadmin):
     request = rf.get('/')
     cl_cls = modelclsadmin.get_changelist(request=request)
     cl = cl_cls(request=request, model=modelclsadmin.model,
-                list_display=("pk", "f"),
-                list_display_links=(), list_filter=(),
+                list_display=modelclsadmin.list_display,
+                list_display_links=(), list_filter=modelclsadmin.list_filter,
                 date_hierarchy=None, search_fields=None,
                 list_select_related=False, list_per_page=5,
                 list_max_show_all=5, list_editable=(),
@@ -100,3 +104,25 @@ def test_admin_order_field_result_headers_templatetag(modelclschangelist):
     results = tuple(result_headers(cl=modelclschangelist))
     assert len(results) == 2
     assert results[1]['sortable'] is True
+
+
+@pytest.mark.django_db
+def test_admin_filter_used(rf, modelcls, modelclschangelist):
+    request = rf.get('/')
+    result = modelclschangelist.get_filters(request=request)
+    assert result[1] is True
+    assert len(result[0]) == 1
+    assert isinstance(result[0][0], TemplateFieldListFilter)
+
+
+@pytest.mark.django_db
+def test_admin_filter_lists_correct_values(rf, modelcls, modelclschangelist):
+    request = rf.get('/')
+    result = modelclschangelist.get_filters(request=request)
+    obj = modelcls(f="admin/index.html")
+    obj.full_clean()
+    obj.save()
+    with override_settings(TEMPLATESELECTOR_DISPLAY_NAMES={"admin/index.html": "GOOSE!"}):
+        choices = tuple(result[0][0].choices(modelclschangelist))
+    displays = tuple(x['display'] for x in choices)
+    assert displays == ('All', 'GOOSE!')

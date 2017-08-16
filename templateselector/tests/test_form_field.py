@@ -46,6 +46,7 @@ def test_model_field_yields_correct_formfield(modelcls):
     assert isinstance(y, TemplateChoiceField)
 
 
+@override_settings(TEMPLATESELECTOR_DISPLAY_NAMES={'admin/500.html': '500'})
 def test_choices():
     x = TemplateChoiceField(match="^admin/[0-9]+.html$")
     assert set(x.choices) == {('admin/404.html', '404'), ('admin/500.html', '500')}
@@ -102,7 +103,7 @@ class WidgetTestCase(SimpleTestCase):
     def test_html_output(self):
         form = form_cls()(data={'a': '1', 'b': 'admin/404.html'})
         STATIC_URL = "/TESTOUTPUT/"
-        with override_settings(STATIC_URL=STATIC_URL):
+        with override_settings(STATIC_URL=STATIC_URL, TEMPLATESELECTOR_DISPLAY_NAMES={'admin/500.html': '500'}):
             rendered = force_text(form['b'])
 
         self.assertHTMLEqual(rendered, """

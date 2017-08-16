@@ -74,3 +74,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
 
 USE_TZ = True
 SILENCED_SYSTEM_CHECKS = ['1_8.W001']
+
+TEMPLATESELECTOR_DISPLAY_NAMES = {
+    'admin/500.html': "Internal Server Error"
+}
