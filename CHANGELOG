@@ -9,7 +9,12 @@ Change history for django-templateselector
 * If the form field (``TemplateChoiceField``) has only **one** valid template
   option, and the form is unbound (ie: its an **add** form or whatever) then
   pre-select the valid choice. Only happens if the field has ``required=True``
-
+* using the ``get_<fieldname>_display`` as a value in a ```ModelAdmin.list_display``
+  will now allow for sorting by the underlying value in the database.
+* if the ``<fieldname>`` is used as part of a ``ModelAdmin.list_filter`` it will
+  show the nice display names of any used templates, rather than their internal
+  path representation.
+  
 0.1.1
 ^^^^^^
 * First release on PyPI.
