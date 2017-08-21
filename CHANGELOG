@@ -5,7 +5,7 @@ Change history for django-templateselector
 ^^^^^^
 
 * Fixed issue where the "same" template could show up more than once in the
-  widget, which wouldn't be possible when using ```get_template``
+  widget, which wouldn't be possible when using ``get_template``
 * If the form field (``TemplateChoiceField``) has only **one** valid template
   option, and the form is unbound (ie: its an **add** form or whatever) then
   pre-select the valid choice. Only happens if the field has ``required=True``

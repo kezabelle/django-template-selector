@@ -43,7 +43,7 @@ Use case
 Imagine you have a ``Page`` model, and you want to allow admins or page authors
 to choose from a range of templates for the page to use, you could do this::
 
-  from django.dbimport models
+  from django.db import models
   from templateselector.fields import TemplateField
 
   class MyPage(models.Model):
@@ -68,8 +68,10 @@ Extends CharField, and requires a ``match`` argument which ought to be a
 string version of a regular expression. The ``match`` will be used to filter
 the possible choices. Optionally also takes a ``display_name`` argument, which
 is a callable (or ``dotted.string.path.to.one``) that takes a given
-string (the selected template path) and returns a nice name for it.
-The default form field for ``TemplateField`` is ``TemplateChoiceField``
+string (the selected template path) and returns a nice name for it. The
+nice name is available as ``get_<fieldname>_display``, `for consistency with Django`_
+
+The default form field for ``TemplateField`` is ...
 
 ``TemplateChoiceField``
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -77,7 +79,7 @@ The default form field for ``TemplateField`` is ``TemplateChoiceField``
 Has the same arguments as ``TemplateField``, and can be used independently
 in all forms if you want to not use the model field.
 The form field, when rendered with the ``TemplateSelector`` widget, will try
-and show a preview image for each template, by attempting to load a ``100x100``
+and show a preview image for each template, by attempting to load a ``100W x 120H``
 image from your staticfiles.
 Given a template name of
 ``path/to/template.htm`` it will try and load ``path/to/template.htm.png`` prefixed
@@ -112,8 +114,6 @@ previous versions. Possibly it'll just default back to a normal radiobox? I dunn
 Installation and usage
 ----------------------
 
-This is currently only available via git ...
-
 Installation
 ^^^^^^^^^^^^
 
@@ -130,6 +130,66 @@ Configuration
 
 To get the ``TemplateSelector`` widget to display correctly, you *will* need to
 add ``templateselector`` to your project's ``INSTALLED_APPS``.
+
+You may also wish to configure ``TEMPLATESELECTOR_DISPLAY_NAMES = {}`` to provide
+nice names (see `nice_display_name`_)
+
+Usage
+^^^^^
+
+For using the  `TemplateField`_, try something like this::
+
+  from django.db.models import Model
+  from templateselector.fields import TemplateField
+
+  class MyPage(models.Model):
+    template = TemplateField(match='^myapp/mypage/layouts/.+\.html$')
+
+For using the `TemplateChoiceField`_ without using the Model field, you'd
+do something like::
+
+    from django.forms import Form
+    from templateselector.fields import TemplateChoiceField
+
+    class MyForm(Form):
+        field = TemplateChoiceField(match="^myapp/[0-9]+.html$")
+
+To get the widget's CSS, don't forget to use ``{{ form.media }}`` in your template!
+
+Altering the widget choice size
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you'd like to modify the dimensions used for each option in the widget (eg:
+you have landscape template thumbnails instead of portrait) you'll need to
+override the following CSS classes::
+
+    .templateselector-list-item {
+        width: ???;
+    }
+    .templateselector-label input {
+        top: ???;
+    }
+    .templateselector-thumb {
+        width: ???;
+        height: ???;
+    }
+
+You can probably use the ``#id_FIELDNAME`` for a given field to provide the
+necessary specificity.
+
+You may need to provide a wrapper element if you re-use the same model/form
+attribute name (eg: ``{{ myform.selected_file }}``) for multiple things with
+different dimensions::
+
+    <!-- target with
+    .myform-wrapper #id_selected_file .templateselector-list-item
+    etc -->
+    <div class="myform-wrapper">{{ myform.selected_file }}</div>
+
+    <!-- target with
+    .myapp-wrapper #id_selected_file .templateselector-thumb
+     etc -->
+    <div class="myapp-wrapper">{{ mymodelform.selected_file }}</div>
 
 Running the tests
 ^^^^^^^^^^^^^^^^^
@@ -172,3 +232,4 @@ It's the `FreeBSD`_. There's should be a ``LICENSE`` file in the root of the rep
 .. _virtualenv: https://virtualenv.pypa.io/en/stable/
 .. _pip: https://pip.pypa.io/en/stable/
 .. _PyPI: https://pypi.python.org/pypi
+.. _for consistency with Django: https://docs.djangoproject.com/en/stable/ref/models/instances/#django.db.models.Model.get_FOO_display
