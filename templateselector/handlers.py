@@ -4,7 +4,17 @@ from django.template.loaders import app_directories, filesystem, cached
 try:
     from os import scandir
 except ImportError:  # pragma: no cover
-    from scandir import scandir
+    try:
+        from scandir import scandir
+    except ImportError as e:
+        import sys
+        from django.utils import six
+        message = ("You're probably using Python 2.x, so you'll need to "
+                   "install the backport: `pip install scandir\>=1.5`")
+        flattened = " ".join(e.args) + "\n" + message
+        e.args = (flattened,)
+        e.message = flattened
+        six.reraise(*sys.exc_info())
 
 
 __all__ = ['get_results_from_registry']
