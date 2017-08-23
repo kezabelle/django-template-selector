@@ -4,6 +4,7 @@ from operator import itemgetter
 from django.conf import settings
 from django.contrib import admin
 from django.utils import six
+from django.utils.deconstruct import deconstructible
 from django.utils.module_loading import import_string
 from django.utils.text import capfirst
 from templateselector.handlers import get_results_from_registry
@@ -43,14 +44,21 @@ def nice_display_name(template_path):
     return capfirst(_(lastpart_spaces))
 
 
-def template_exists_validator(value):
-    try:
-        get_template(value)
-    except TemplateDoesNotExist:
-        raise ValidationError(
-            _('%(value)s is not a valid template'),
-            params={'value': value},
-        )
+@deconstructible
+class TemplateExistsValidator(object):
+    __slots__ = ('regex', 'missing_template', 'wrong_pattern', '_constructor_args')
+    def __init__(self, regex):
+        self.regex = re.compile(regex)
+        self.missing_template = _('%(value)s is not a valid template')
+        self.wrong_pattern = _("%(value)s doesn't match the available template format")
+
+    def __call__(self, value):
+        if not self.regex.match(value):
+            raise ValidationError(self.wrong_pattern, params={'value': value})
+        try:
+            get_template(value)
+        except TemplateDoesNotExist:
+            raise ValidationError(self.missing_template, params={'value': value})
 
 
 class TemplateField(CharField):
@@ -59,13 +67,14 @@ class TemplateField(CharField):
             raise ImproperlyConfigured(_("max_length is implicitly set to 191 internally"))
         kwargs['max_length'] = 191 # in case of using mysql+utf8mb4 & indexing
         super(TemplateField, self).__init__(*args, **kwargs)
-        self.validators.append(template_exists_validator)
 
         if not match.startswith('^'):
             raise ImproperlyConfigured("Missing required ^ at start")
         if not match.endswith('$'):
             raise ImproperlyConfigured("Missing required $ at end")
         self.match = match
+        template_exists_validator = TemplateExistsValidator(self.match)
+        self.validators.append(template_exists_validator)
 
         if isinstance(display_name, six.text_type) and '.' in display_name:
             display_name = import_string(display_name)

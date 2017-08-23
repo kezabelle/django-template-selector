@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
+import pickle
 import pytest
 from django.contrib.admin import ModelAdmin, AdminSite
 from django.contrib.admin.templatetags.admin_list import result_headers
@@ -10,6 +11,8 @@ from django.core.exceptions import ValidationError, ImproperlyConfigured
 from django.template import TemplateDoesNotExist
 from django.template.backends.django import Template
 from django.test import override_settings
+from django.utils.encoding import force_text
+
 from templateselector.admin import TemplateFieldListFilter
 from templateselector.fields import TemplateField
 
@@ -68,8 +71,18 @@ def test_template_exists(modelcls):
 
 def test_template_does_not_exist_cleaning_errors(modelcls):
     x = modelcls(f="admin/in2dex.html")
-    with pytest.raises(ValidationError):
+    with pytest.raises(ValidationError) as exc:
         x.full_clean()
+    error_message = 'admin/in2dex.html is not a valid template'
+    assert error_message in force_text(exc.value)
+
+
+def test_template_given_doesnt_match_regex_errors(modelcls):
+    x = modelcls(f="admin/should_not_exist.json")
+    with pytest.raises(ValidationError) as exc:
+        x.full_clean()
+    error_message = "admin/should_not_exist.json doesn't match the available template format"
+    assert error_message in force_text(exc.value)
 
 
 def test_template_instance_function_exists(modelcls):
@@ -126,3 +139,9 @@ def test_admin_filter_lists_correct_values(rf, modelcls, modelclschangelist):
         choices = tuple(result[0][0].choices(modelclschangelist))
     displays = tuple(x['display'] for x in choices)
     assert displays == ('All', 'GOOSE!')
+
+
+def test_pickling(modelcls):
+    x = modelcls(f="admin/index.html")
+    x.full_clean()
+    pickle.loads(pickle.dumps(x))
