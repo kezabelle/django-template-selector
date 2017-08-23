@@ -18,3 +18,23 @@ env:
 
 script:
   - tox -e $TOX_ENV
+
+deploy:
+  provider: pypi
+  user: "kezabelle"
+  password:
+    secure: nyHO+Ouaq/64fhdwtvvbK5jE+GiLFyah3YC8ibUP4QuOGQcl6CSOLTVhVqmvoCbJQBAQi84KefitnaPK/Jvpbpp3jBKsou5cApoarlTCCqKME9B0P5bQYgYoHBo1xxB0RFpjnbyOYPLYEBKo9aHqh0/R0GUPY8lUALZ7lfp0C4FR8Ogugbm5DRwLh/1V4mBYb/jZOrN2VkFlXwmVDrYWdPAA5Bz9rviu0aXLg7UOyNQIf6qywnPBCpZEHl6eGBG8DdMSniV+mNq9L10ISU9DoaVj7jnrEPFvKxnyFl/a4KeCGvP4kH90/gHuUTU6loet4clGpnXa5/n+5Zq0t5WfOr/3NL1lntCbQmqVniqffPW4nz99rMQ36iLl2Xoz9UTwTEyN7AdkmIIHKVox9hmVfM/npoVwyQEBoY6XnysY9s8yrnqWF3cEzoQzCqOxnt6pF/4aO7aUkfA27W5vwCYDJziGAPT0h62lVDJJvNUfis2mAk5kYqFvJZduqzUcDgivCsHN37wShk//rRAZcrjCbaiOvrLKJsS8A8L6NrDainN+U46GWnerZXr1P3kxw8luwMXKpZXS8MN50Ju2mj/T3YNK66K6EBTY9xT1r5ZXEy7TSJ1rEamPJEpRSddyTRoCxgI7EFrY+zl2AeU4ClBzudPqmmnWWKXsv0vwk/omtFU=
+  on:
+    tags: true
+  distributions: "sdist bdist_wheel"
+  before_deploy:
+    - "rm -fr build/"
+    - "rm -fr htmlcov/"
+    - "rm -fr dist/"
+    - "rm -fr .eggs/"
+    - "find . -name '*.egg-info' -exec rm -fr {} +"
+    - "find . -name '*.egg' -exec rm -f {} +"
+    - "find . -name '*.pyc' -exec rm -f {} +"
+    - "find . -name '*.pyo' -exec rm -f {} +"
+    - "find . -name '*~' -exec rm -f {} +"
+    - "find . -name '__pycache__' -exec rm -fr {} +"
