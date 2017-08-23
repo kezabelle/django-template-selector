@@ -2,13 +2,23 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from setuptools import setup
+from setuptools import setup, __version__ as setuptools_version
 from setuptools.command.test import test as TestCommand
-EXTRA_INSTALLS = []
+
+INSTALL_REQUIRES = []
+EXTRA_REQUIRES = {}
+scandir = "scandir>=1.5"
+if int(setuptools_version.split(".", 1)[0]) < 18:
+    assert "bdist_wheel" not in sys.argv, "setuptools 18 required for wheels."
+    # For legacy setuptools + sdist.
+    if sys.version_info[0] == 2:
+        INSTALL_REQUIRES.append(scandir)
+else:
+    EXTRA_REQUIRES[":python_version<'3'"] = [scandir]
+
 if sys.version_info[0] == 2:
     # get the Py3K compatible `encoding=` for opening files.
     from io import open
-    EXTRA_INSTALLS.append("scandir>=1.5")
 HERE = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -61,7 +71,8 @@ setup(
     include_package_data=True,
     install_requires=[
         "Django>=1.8",
-    ] + EXTRA_INSTALLS,
+    ] + INSTALL_REQUIRES,
+    extras_require=EXTRA_REQUIRES,
     tests_require=[
         "pytest>=2.6",
         "pytest-django>=2.8.0",
