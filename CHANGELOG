@@ -1,7 +1,6 @@
 Change history for django-templateselector
 ------------------------------------------
-
-?next?
+0.2.0
 ^^^^^^
 
 * Fixed issue where the "same" template could show up more than once in the
