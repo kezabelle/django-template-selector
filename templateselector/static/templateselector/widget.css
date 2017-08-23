@@ -1,5 +1,8 @@
 .templateselector-list {
     font-size: 0;
+    margin: 0;
+    list-style: none;
+    padding: 0;
 }
 .templateselector-list * {
     box-sizing: border-box;
