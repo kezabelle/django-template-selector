@@ -9,19 +9,34 @@ from templateselector.fields import TemplateChoiceField
 
 
 def example(request):
-    class MyForm(Form):
+    class MyForm1(Form):
         field = TemplateChoiceField(match="^admin/[0-9]+.html$")
+
+    class MyForm2(Form):
+        field = TemplateChoiceField(match="^admin/404.html$")
+
+    class MyForm3(Form):
+        field = TemplateChoiceField(match="^admin/_doesnt_exist_.html$")
+
     context = {
-        'form': MyForm(request.GET or None),
+        'forms': (
+            MyForm1(request.GET or None, prefix='form1'),
+            MyForm2(request.GET or None, prefix='form2'),
+            MyForm3(request.GET or None, prefix='form3'),
+        )
     }
-    template = Template("""
-    <!DOCTYPE html>
-    <html>
-    <head>{{ form.media }}</head>
+    template = Template("""<!DOCTYPE html>
+    <html><head>
+    <title>django-templateselector</title>
+    {{ forms.0.media }}</head>
     <body>
-    <form action="" method="GET">
-    {{ form.media }}
+    <form action="" method="GET" accept-charset="utf-8">
+    {% for form in forms %}
+    <div style="background-color: #FFF; border-bottom: 1px solid #DDD; padding: 1rem;">
     {{ form.field }}
+    {{ form.field.errors }}
+    </div>
+    {% endfor %}
     <input type="submit" value="Click!">
     </form>
     </body>
