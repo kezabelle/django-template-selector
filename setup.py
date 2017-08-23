@@ -54,6 +54,10 @@ SHORT_DESCRIPTION = "Provides a model field and form field for allowing users to
 KEYWORDS = (
     "django",
     "templateselector",
+    "widget",
+    "model",
+    "form",
+    "field",
 )
 
 setup(
