@@ -108,7 +108,7 @@ def test_admin_order_field_attr(modelcls):
     assert curried.admin_order_field == "f"
 
 
-def test_admin_order_field_changelist(rf, modelclschangelist):
+def test_admin_order_field_changelist(modelclschangelist):
     result = modelclschangelist.get_ordering_field("get_f_display")
     assert result == "f"
 
@@ -120,7 +120,7 @@ def test_admin_order_field_result_headers_templatetag(modelclschangelist):
 
 
 @pytest.mark.django_db
-def test_admin_filter_used(rf, modelcls, modelclschangelist):
+def test_admin_filter_used(rf, modelclschangelist):
     request = rf.get('/')
     result = modelclschangelist.get_filters(request=request)
     assert result[1] is True
