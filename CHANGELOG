@@ -1,11 +1,18 @@
 Change history for django-templateselector
 ------------------------------------------
 
+?next?
+^^^^^^
+* [meta] Still trying to master automatic deployment from Travis. No
+  functionality change since ``0.2.0``
+
+
 0.2.1
 ^^^^^^
-* Automatic deployment of new releases from Travis mostly worked, but the
+* [meta] Automatic deployment of new releases from Travis mostly worked, but the
   ``sdist`` is in poor shape (see commit ``44ad2a1542f2f61a73de84e0f7213bccfdb6f265``)
-  so I've disabled that for now. Wheels are better anyway, right?
+  so I've disabled that for now. Wheels are better anyway, right? No
+  functionality change since ``0.2.0``
 
 
 0.2.0
