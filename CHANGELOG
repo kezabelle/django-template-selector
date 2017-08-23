@@ -1,7 +1,6 @@
 Change history for django-templateselector
 ------------------------------------------
-
-?next?
+0.2.2
 ^^^^^^
 * [meta] Still trying to master automatic deployment from Travis. No
   functionality change since ``0.2.0``
