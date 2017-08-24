@@ -1,8 +1,7 @@
 Change history for django-templateselector
 ------------------------------------------
 
-
-?next?
+0.2.3
 ^^^^^^
 * |FIX| Change the model level field validation (``TemplateField(match=...)`` to
   forcibly check the given value matches the regex, in addition to checking
