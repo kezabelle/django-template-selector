@@ -9,7 +9,7 @@ import pytest
 
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
-from django.forms import Form, IntegerField
+from django.forms import Form, IntegerField, modelform_factory
 from django.test import override_settings, SimpleTestCase
 from django.utils.encoding import force_text
 from templateselector.fields import TemplateChoiceField
@@ -187,3 +187,15 @@ def test_no_duplicates():
         (u'django/forms/widgets/template_selector.html', u'Template selector'),
         (u'django/forms/widgets/template_selector_option.html', u'Template selector option'),
     ]
+
+
+def test_form_validation_supercedes_model_validation_when_used_together(rf, modelcls):
+    request = rf.get('/', data={
+        'f': 'admin/should_not_exist.json'
+    })
+    Form = modelform_factory(modelcls, fields=['f'])
+    form = Form(data=request.GET)
+    assert form.is_valid() is False
+    assert form.errors == {
+        'f': ['Select a valid choice. admin/should_not_exist.json is not one of the available choices.']
+    }
