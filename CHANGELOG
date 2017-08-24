@@ -1,14 +1,24 @@
 Change history for django-templateselector
 ------------------------------------------
+
+
+?next?
+^^^^^^
+* |FIX| Change the model level field validation (``TemplateField(match=...)`` to
+  forcibly check the given value matches the regex, in addition to checking
+  whether the given value exists in one of the template loaders.
+* |META| Still trying to master automatic deployment from Travis. One day I'll
+  get sdist working again!
+
 0.2.2
 ^^^^^^
-* [meta] Still trying to master automatic deployment from Travis. No
+* |META| Still trying to master automatic deployment from Travis. No
   functionality change since ``0.2.0``
 
 
 0.2.1
 ^^^^^^
-* [meta] Automatic deployment of new releases from Travis mostly worked, but the
+* |META| Automatic deployment of new releases from Travis mostly worked, but the
   ``sdist`` is in poor shape (see commit ``44ad2a1542f2f61a73de84e0f7213bccfdb6f265``)
   so I've disabled that for now. Wheels are better anyway, right? No
   functionality change since ``0.2.0``
@@ -17,21 +27,29 @@ Change history for django-templateselector
 0.2.0
 ^^^^^^
 
-* Fixed issue where the "same" template could show up more than once in the
-  widget, which wouldn't be possible when using ``get_template``
-* If the form field (``TemplateChoiceField``) has only **one** valid template
+* |FIX| prevent the "same" template showing up more than once in the
+  widget, which wouldn't be possible when using ``get_template`` (`#1`_)
+* |NEW| If the form field (``TemplateChoiceField``) has only **one** valid template
   option, and the form is unbound (ie: its an **add** form or whatever) then
   pre-select the valid choice. Only happens if the field has ``required=True``
-* using the ``get_<fieldname>_display`` as a value in a ```ModelAdmin.list_display``
-  will now allow for sorting by the underlying value in the database.
-* if the ``<fieldname>`` is used as part of a ``ModelAdmin.list_filter`` it will
+* |NEW| using the ``get_<fieldname>_display`` as a value in a ```ModelAdmin.list_display``
+  will now allow for sorting by the underlying value in the database. (`#2`_)
+* |NEW| if the ``<fieldname>`` is used as part of a ``ModelAdmin.list_filter`` it will
   show the nice display names of any used templates, rather than their internal
-  path representation.
+  path representation. (`#3`_)
   
 0.1.1
 ^^^^^^
-* First release on PyPI.
+* |META| First release on PyPI.
 
 0.1.0
 ^^^^^
-* Initial development.
+* |META| Initial development.
+
+
+.. |FIX| replace:: **BUGFIX:**
+.. |NEW| replace:: **FEATURE:**
+.. |META| replace:: **MISC:**
+.. _#1: https://github.com/kezabelle/django-template-selector/issues/1
+.. _#2: https://github.com/kezabelle/django-template-selector/issues/2
+.. _#3: https://github.com/kezabelle/django-template-selector/issues/3
