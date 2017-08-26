@@ -29,10 +29,10 @@ deploy:
     condition: $TOX_ENV = py35-dj111
   distributions: "bdist_wheel"
 before_deploy:
-  - "rm -fr build htmlcov dist .eggs .tox"
-  - "find . -name '*.egg-info' -exec rm -fr +"
-  - "find . -name '*.egg' -exec rm -f {} +"
-  - "find . -name '*.pyc' -exec rm -f {} +"
-  - "find . -name '*.pyo' -exec rm -f {} +"
-  - "find . -name '*~' -exec rm -f {} +"
-  - "find . -name '__pycache__' -exec rm -fr {} +"
+  - 'rm -fr build htmlcov dist .eggs .tox'
+  - 'find . -name "*.egg-info" -exec rm -fr {} \+'
+  - 'find . -name "*.egg" -exec rm -rf {} \+'
+  - 'find . -name "*.pyc" -exec rm -f {} \+'
+  - 'find . -name "*.pyo" -exec rm -f {} \+'
+  - 'find . -name "*~" -exec rm -f {} \+'
+  - 'find . -name "__pycache__" -exec rm -fr {} \+'
