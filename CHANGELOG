@@ -1,8 +1,7 @@
 Change history for django-templateselector
 ------------------------------------------
 
-
-?next?
+0.2.4
 ^^^^^^
 * |NEW| Added a `system check`_ to ensure that the templates and styles are
   able to be loaded.
