@@ -1,6 +1,13 @@
 Change history for django-templateselector
 ------------------------------------------
 
+
+?next?
+^^^^^^
+* |NEW| Added a `system check`_ to ensure that the templates and styles are
+  able to be loaded.
+
+
 0.2.3
 ^^^^^^
 * |FIX| Change the model level field validation (``TemplateField(match=...)`` to
@@ -52,3 +59,4 @@ Change history for django-templateselector
 .. _#1: https://github.com/kezabelle/django-template-selector/issues/1
 .. _#2: https://github.com/kezabelle/django-template-selector/issues/2
 .. _#3: https://github.com/kezabelle/django-template-selector/issues/3
+.. _system check: https://docs.djangoproject.com/en/stable/topics/checks/
