@@ -3,10 +3,12 @@ from __future__ import unicode_literals, absolute_import
 from operator import itemgetter
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.staticfiles import finders
 from django.utils import six
 from django.utils.deconstruct import deconstructible
 from django.utils.module_loading import import_string
 from django.utils.text import capfirst
+from django.core.checks import Warning
 from templateselector.handlers import get_results_from_registry
 from templateselector.widgets import TemplateSelector, AdminTemplateSelector
 import re
@@ -97,6 +99,44 @@ class TemplateField(CharField):
         }
         defaults.update(kwargs)
         return super(TemplateField, self).formfield(**defaults)
+
+    def check(self, **kwargs):
+        errors = []
+        templates = (
+            'django/forms/widgets/template_selector.html',
+            'django/forms/widgets/template_selector_option.html'
+        )
+        missing = set()
+        for t in templates:
+            try:
+                get_template('django/forms/widgets/template_selector.html')
+            except TemplateDoesNotExist:
+                missing.add(t)
+        if missing:
+            msg = "Could not load templates: {}".format(missing)
+            hint = ("Add 'templateselector' to your INSTALLED_APPS,\n\t      "
+                    "OR create the templates yourself,\n\t      "
+                    "OR silence this warning and don't use the default TemplateSelector widget")
+            errors.append(
+                Warning(msg, hint=hint, obj=self, id='templateselector.W001')
+            )
+        css_files = (
+            'templateselector/widget.css',
+            'templateselector/admin_widget.css',
+        )
+        css_missing = set()
+        for css in css_files:
+            css_file = finders.find(css)
+            if css_file is None:
+                css_missing.add(css)
+        if css_missing:
+            msg = "Could not load staticfiles: {}".format(css_missing)
+            hint = ("Add 'templateselector' to your INSTALLED_APPS\n\t      "
+                    "OR create the file and necessary styles yourself")
+            errors.append(
+                Warning(msg, hint=hint, obj=self, id='templateselector.W002')
+            )
+        return errors
 
     def contribute_to_class(self, cls, name, **kwargs):
         super(TemplateField, self).contribute_to_class(cls, name, **kwargs)
