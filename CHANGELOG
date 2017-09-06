@@ -1,8 +1,7 @@
 Change history for django-templateselector
 ------------------------------------------
 
-
-?next?
+0.2.5
 ^^^^^^
 * |FIX| Added ``:focus`` visual styles so that keyboard navigation through a form
   including the widget may now indicate when selecting items.
