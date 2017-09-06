@@ -3,9 +3,11 @@ ul.vTemplateSelectorField .templateselector-list-item {
 }
 ul.vTemplateSelectorField .templateselector-label:hover {
 }
+ul.vTemplateSelectorField .templateselector-label input:focus ~ .templateselector-thumb,
 ul.vTemplateSelectorField .templateselector-label:hover .templateselector-thumb {
     border-color: #79aec8;
 }
+ul.vTemplateSelectorField .templateselector-label input:focus ~ .templateselector-display-name,
 ul.vTemplateSelectorField .templateselector-label:hover .templateselector-display-name {
     background-color: #79aec8;
     border-color: #79aec8;

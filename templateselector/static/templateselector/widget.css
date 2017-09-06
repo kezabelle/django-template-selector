@@ -63,11 +63,13 @@
     border-bottom-right-radius: 0.188em;
 }
 
+.templateselector-label input:focus ~ .templateselector-thumb,
 .templateselector-label:hover .templateselector-thumb {
     border-color: #AAA;
     -webkit-filter: grayscale(0%);
     filter: grayscale(0%);
 }
+.templateselector-label input:focus ~ .templateselector-display-name,
 .templateselector-label:hover .templateselector-display-name {
     background-color: #AAA;
     border-color: #AAA;
