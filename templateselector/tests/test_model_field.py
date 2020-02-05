@@ -4,6 +4,7 @@ import pytest
 from django.contrib.admin import ModelAdmin, AdminSite
 from django.contrib.admin.templatetags.admin_list import result_headers
 from django.contrib.admin.views.main import ChangeList
+from django.contrib.auth.models import AnonymousUser
 
 from django.core.exceptions import ValidationError, ImproperlyConfigured
 from django.template import TemplateDoesNotExist
@@ -37,6 +38,7 @@ def modelclsadmin(modelcls):
 @pytest.yield_fixture
 def modelclschangelist(rf, modelclsadmin):
     request = rf.get('/')
+    request.user = AnonymousUser()
     cl_cls = modelclsadmin.get_changelist(request=request)
     cl = cl_cls(request=request, model=modelclsadmin.model,
                 list_display=modelclsadmin.list_display,
@@ -44,7 +46,8 @@ def modelclschangelist(rf, modelclsadmin):
                 date_hierarchy=None, search_fields=None,
                 list_select_related=False, list_per_page=5,
                 list_max_show_all=5, list_editable=(),
-                model_admin=modelclsadmin)
+                model_admin=modelclsadmin,
+                sortable_by=("pk", "f",))
     yield cl
 
 
