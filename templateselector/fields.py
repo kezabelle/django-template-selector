@@ -17,7 +17,6 @@ from django.forms import TypedChoiceField
 from django.template import TemplateDoesNotExist, engines
 from django.template.loader import get_template
 from django.utils.encoding import force_text
-from django.utils.functional import curry
 from django.utils.translation import gettext_lazy as _
 
 
@@ -138,20 +137,17 @@ class TemplateField(CharField):
 
     def contribute_to_class(self, cls, name, **kwargs):
         super(TemplateField, self).contribute_to_class(cls, name, **kwargs)
-        display = curry(self.__get_FIELD_template_display, field=self)
-        display.short_description = self.verbose_name
-        display.admin_order_field = name
-        setattr(cls, 'get_%s_display' % self.name, display)
-        template_instance = curry(self.__get_FIELD_template_instance, field=self)
-        setattr(cls, 'get_%s_instance' % self.name, template_instance)
-
-    def __get_FIELD_template_display(self, cls, field):
-        value = getattr(cls, field.attname)
-        return self.display_name(value)
-
-    def __get_FIELD_template_instance(self, cls, field):
-        value = getattr(cls, field.attname)
-        return get_template(value)
+        field = self
+        def __get_FIELD_template_display(self):
+            value = getattr(self, field.attname)
+            return field.display_name(value)
+        def __get_FIELD_template_instance(self):
+            value = getattr(self, field.attname)
+            return get_template(value)
+        __get_FIELD_template_display.short_description = self.verbose_name
+        __get_FIELD_template_display.admin_order_field = name
+        setattr(cls, 'get_%s_display' % self.name, __get_FIELD_template_display)
+        setattr(cls, 'get_%s_instance' % self.name, __get_FIELD_template_instance)
 
 
 class TemplateChoiceField(TypedChoiceField):
