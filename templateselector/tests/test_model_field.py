@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import pickle
 import pytest
 from django.contrib.admin import ModelAdmin, AdminSite

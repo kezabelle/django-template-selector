@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
 from operator import itemgetter
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.staticfiles import finders
-from django.utils import six
 from django.utils.deconstruct import deconstructible
 from django.utils.module_loading import import_string
 from django.utils.text import capfirst
@@ -20,7 +18,7 @@ from django.template import TemplateDoesNotExist, engines
 from django.template.loader import get_template
 from django.utils.encoding import force_text
 from django.utils.functional import curry
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 __all__ = ['TemplateField', 'TemplateChoiceField']
@@ -78,7 +76,7 @@ class TemplateField(CharField):
         template_exists_validator = TemplateExistsValidator(self.match)
         self.validators.append(template_exists_validator)
 
-        if isinstance(display_name, six.text_type) and '.' in display_name:
+        if isinstance(display_name, str) and '.' in display_name:
             display_name = import_string(display_name)
         if not callable(display_name):
             raise ImproperlyConfigured(_("display_name= argument must be a callable which takes a single string"))
@@ -166,7 +164,7 @@ class TemplateChoiceField(TypedChoiceField):
         max_length = None
         if 'max_length' in kwargs:
             max_length = kwargs.pop('max_length')
-        if isinstance(display_name, six.text_type) and '.' in display_name:
+        if isinstance(display_name, str) and '.' in display_name:
             display_name = import_string(display_name)
         if not callable(display_name):
             raise ImproperlyConfigured(_("display_name= argument must be a callable which takes a single string"))

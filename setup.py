@@ -2,25 +2,10 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-from setuptools import setup, __version__ as setuptools_version
+from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
-INSTALL_REQUIRES = []
-EXTRA_REQUIRES = {}
-scandir = "scandir>=1.5"
-if int(setuptools_version.split(".", 1)[0]) < 18:
-    assert "bdist_wheel" not in sys.argv, "setuptools 18 required for wheels."
-    # For legacy setuptools + sdist.
-    if sys.version_info[0] == 2:
-        INSTALL_REQUIRES.append(scandir)
-else:
-    EXTRA_REQUIRES[":python_version<'3'"] = [scandir]
-
-if sys.version_info[0] == 2:
-    # get the Py3K compatible `encoding=` for opening files.
-    from io import open
 HERE = os.path.abspath(os.path.dirname(__file__))
-
 
 class PyTest(TestCommand):
     def initialize_options(self):
@@ -62,7 +47,7 @@ KEYWORDS = (
 
 setup(
     name="django-templateselector",
-    version="0.2.5",
+    version="1.0.0",
     author="Keryn Knight",
     author_email="django-templateselector@kerynknight.com",
     maintainer="Keryn Knight",
@@ -74,9 +59,8 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "Django>=1.8",
-    ] + INSTALL_REQUIRES,
-    extras_require=EXTRA_REQUIRES,
+        "Django>=2.0",
+    ],
     tests_require=[
         "pytest>=2.6",
         "pytest-django>=2.8.0",
@@ -93,11 +77,9 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: {}".format(LICENSE),
         "Natural Language :: English",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Framework :: Django",
-        "Framework :: Django :: 1.11",
+        "Framework :: Django :: 2",
+        "Framework :: Django :: 3",
     ],
 )

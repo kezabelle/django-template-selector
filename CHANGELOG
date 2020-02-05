@@ -1,6 +1,11 @@
 Change history for django-templateselector
 ------------------------------------------
 
+1.0.0
+^^^^^^
+* |FIX| Remove support for end-of-life Django and Python versions
+* |NEW| Add support for Django 3.0
+
 0.2.5
 ^^^^^^
 * |FIX| Added ``:focus`` visual styles so that keyboard navigation through a form

@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 from unittest import skipIf
 from uuid import UUID
 
