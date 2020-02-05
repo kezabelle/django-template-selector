@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
 from django.contrib.admin import AllValuesFieldListFilter, FieldListFilter
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 _ALL = _('All')

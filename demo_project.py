@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
 import os
 import sys
 sys.dont_write_bytecode = True
@@ -8,15 +7,7 @@ MISSING_DEPENDENCIES = []
 try:
     from django.conf import settings
 except ImportError:
-    MISSING_DEPENDENCIES.append("Django\>=1.11")
-try:
-    from os import scandir
-except ImportError:
-    try:
-        from scandir import scandir
-    except ImportError:
-        MISSING_DEPENDENCIES.append("scandir\>=1.5")
-
+    MISSING_DEPENDENCIES.append("Django\>=2.0")
 
 if MISSING_DEPENDENCIES:
     deps = " ".join(MISSING_DEPENDENCIES)

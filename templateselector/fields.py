@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
 from operator import itemgetter
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.staticfiles import finders
-from django.utils import six
 from django.utils.deconstruct import deconstructible
 from django.utils.module_loading import import_string
 from django.utils.text import capfirst
@@ -19,8 +17,7 @@ from django.forms import TypedChoiceField
 from django.template import TemplateDoesNotExist, engines
 from django.template.loader import get_template
 from django.utils.encoding import force_text
-from django.utils.functional import curry
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 __all__ = ['TemplateField', 'TemplateChoiceField']
@@ -78,7 +75,7 @@ class TemplateField(CharField):
         template_exists_validator = TemplateExistsValidator(self.match)
         self.validators.append(template_exists_validator)
 
-        if isinstance(display_name, six.text_type) and '.' in display_name:
+        if isinstance(display_name, str) and '.' in display_name:
             display_name = import_string(display_name)
         if not callable(display_name):
             raise ImproperlyConfigured(_("display_name= argument must be a callable which takes a single string"))
@@ -140,20 +137,17 @@ class TemplateField(CharField):
 
     def contribute_to_class(self, cls, name, **kwargs):
         super(TemplateField, self).contribute_to_class(cls, name, **kwargs)
-        display = curry(self.__get_FIELD_template_display, field=self)
-        display.short_description = self.verbose_name
-        display.admin_order_field = name
-        setattr(cls, 'get_%s_display' % self.name, display)
-        template_instance = curry(self.__get_FIELD_template_instance, field=self)
-        setattr(cls, 'get_%s_instance' % self.name, template_instance)
-
-    def __get_FIELD_template_display(self, cls, field):
-        value = getattr(cls, field.attname)
-        return self.display_name(value)
-
-    def __get_FIELD_template_instance(self, cls, field):
-        value = getattr(cls, field.attname)
-        return get_template(value)
+        field = self
+        def __get_FIELD_template_display(self):
+            value = getattr(self, field.attname)
+            return field.display_name(value)
+        def __get_FIELD_template_instance(self):
+            value = getattr(self, field.attname)
+            return get_template(value)
+        __get_FIELD_template_display.short_description = self.verbose_name
+        __get_FIELD_template_display.admin_order_field = name
+        setattr(cls, 'get_%s_display' % self.name, __get_FIELD_template_display)
+        setattr(cls, 'get_%s_instance' % self.name, __get_FIELD_template_instance)
 
 
 class TemplateChoiceField(TypedChoiceField):
@@ -166,7 +160,7 @@ class TemplateChoiceField(TypedChoiceField):
         max_length = None
         if 'max_length' in kwargs:
             max_length = kwargs.pop('max_length')
-        if isinstance(display_name, six.text_type) and '.' in display_name:
+        if isinstance(display_name, str) and '.' in display_name:
             display_name = import_string(display_name)
         if not callable(display_name):
             raise ImproperlyConfigured(_("display_name= argument must be a callable which takes a single string"))
